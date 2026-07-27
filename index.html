@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Online Plant Nursery themed Web Technology Lab dashboard for URK24CS1038">
+  <title>Online Plant Nursery | Web Technology Lab</title>
+
+  <style>
+    :root {
+      --bg: #f4f0e6;
+      --surface: #fffdf7;
+      --surface-soft: #eef3e7;
+      --green-dark: #234b32;
+      --green: #3f7452;
+      --green-light: #8fb996;
+      --terracotta: #c56f4b;
+      --gold: #d9b65f;
+      --text: #243126;
+      --muted: #68736a;
+      --border: rgba(35, 75, 50, 0.14);
+      --shadow: 0 20px 50px rgba(48, 72, 52, 0.13);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(143, 185, 150, 0.28), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(197, 111, 75, 0.15), transparent 28%),
+        var(--bg);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(1160px, 92%);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 42px 0 24px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 54px 48px;
+      border: 1px solid var(--border);
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(255, 253, 247, 0.98), rgba(238, 243, 231, 0.96));
+      box-shadow: var(--shadow);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 280px;
+      height: 280px;
+      right: -90px;
+      top: -110px;
+      background: rgba(63, 116, 82, 0.11);
+    }
+
+    .hero::after {
+      width: 180px;
+      height: 180px;
+      left: -65px;
+      bottom: -90px;
+      background: rgba(197, 111, 75, 0.12);
+    }
+
+    .plant-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 16px;
+      padding: 8px 15px;
+      border: 1px solid rgba(63, 116, 82, 0.22);
+      border-radius: 999px;
+      color: var(--green-dark);
+      background: rgba(255, 255, 255, 0.62);
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .plant-mark span {
+      font-size: 1.05rem;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin-bottom: 14px;
+      color: var(--green-dark);
+      font-size: clamp(2.1rem, 5vw, 4.2rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-subtitle {
+      max-width: 730px;
+      color: var(--muted);
+      font-size: 1.04rem;
+    }
+
+    .student-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .detail-pill {
+      padding: 10px 15px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--green-dark);
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 0.94rem;
+      box-shadow: 0 8px 22px rgba(48, 72, 52, 0.07);
+    }
+
+    main {
+      padding: 10px 0 70px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      margin: 32px 0 24px;
+    }
+
+    .heading-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .section-heading h2 {
+      color: var(--green-dark);
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+    }
+
+    .theme-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      color: #fffdf7;
+      background: var(--terracotta);
+      font-size: 0.82rem;
+      font-weight: 800;
+      box-shadow: 0 8px 20px rgba(197, 111, 75, 0.2);
+    }
+
+    .section-heading p {
+      max-width: 450px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .experiment-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .experiment-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 230px;
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      color: inherit;
+      text-decoration: none;
+      background: rgba(255, 253, 247, 0.94);
+      box-shadow: 0 12px 32px rgba(48, 72, 52, 0.09);
+      transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        border-color 180ms ease;
+    }
+
+    .experiment-card::after {
+      content: "☘";
+      position: absolute;
+      right: 16px;
+      top: 10px;
+      color: rgba(63, 116, 82, 0.09);
+      font-size: 4.4rem;
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+
+    .experiment-card:hover,
+    .experiment-card:focus-visible {
+      transform: translateY(-7px);
+      border-color: rgba(63, 116, 82, 0.42);
+      box-shadow: 0 20px 42px rgba(48, 72, 52, 0.16);
+      outline: none;
+    }
+
+    .experiment-number {
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 28px;
+      border-radius: 16px;
+      color: #fffdf7;
+      background: linear-gradient(135deg, var(--green-dark), var(--green));
+      font-weight: 900;
+      box-shadow: 0 10px 22px rgba(63, 116, 82, 0.22);
+    }
+
+    .experiment-card:nth-child(3n + 2) .experiment-number {
+      background: linear-gradient(135deg, #a75638, var(--terracotta));
+    }
+
+    .experiment-card:nth-child(3n) .experiment-number {
+      color: #3d3215;
+      background: linear-gradient(135deg, #d4ab44, var(--gold));
+    }
+
+    .experiment-card h3 {
+      margin-bottom: 8px;
+      color: var(--green-dark);
+      font-size: 1.18rem;
+    }
+
+    .experiment-card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .open-label {
+      margin-top: auto;
+      padding-top: 20px;
+      color: var(--green);
+      font-size: 0.91rem;
+      font-weight: 800;
+    }
+
+    .information {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-top: 30px;
+      padding: 22px 24px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--muted);
+      background: rgba(238, 243, 231, 0.8);
+    }
+
+    .information-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .information strong {
+      color: var(--green-dark);
+    }
+
+    code {
+      color: var(--terracotta);
+      font-family: Consolas, Monaco, monospace;
+      font-weight: 700;
+    }
+
+    footer {
+      padding: 24px 0 36px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 920px) {
+      .experiment-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      header {
+        padding-top: 24px;
+      }
+
+      .hero {
+        padding: 34px 24px;
+        border-radius: 26px;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .section-heading p {
+        text-align: left;
+      }
+
+      .experiment-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .experiment-card {
+        min-height: 205px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <section class="hero">
+        <div class="plant-mark"><span>🌿</span> Web Technology Laboratory</div>
+
+        <h1>23CS2049 – Web Technology Lab – 2026-1-B1</h1>
+
+        <p class="hero-subtitle">
+          A themed experiment dashboard designed around an Online Plant Nursery,
+          combining clean web design with a natural and modern visual style.
+        </p>
+
+        <div class="student-details">
+          <span class="detail-pill"><strong>Register Number:</strong> URK24CS1038</span>
+          <span class="detail-pill"><strong>Student Name:</strong> Jebarson Caleb D</span>
+        </div>
+      </section>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="section-heading">
+      <div class="heading-group">
+        <h2>Laboratory Experiments</h2>
+        <span class="theme-badge">🌱 Online Plant Nursery</span>
+      </div>
+
+      <p>Select an experiment card to open the corresponding HTML page.</p>
+    </div>
+
+    <!--
+      Put your HTML files inside the "experiments" folder.
+      Change each href below so it exactly matches your actual filename.
+    -->
+
+    <section class="experiment-grid" aria-label="Web Technology laboratory experiments">
+
+      <a class="experiment-card" href="experiments/experiment-1.html">
+        <span class="experiment-number">01</span>
+        <h3>Experiment 1</h3>
+        <p>Introduction to HTML and the basic structure of the plant nursery website.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+      <a class="experiment-card" href="experiments/experiment-2.html">
+        <span class="experiment-number">02</span>
+        <h3>Experiment 2</h3>
+        <p>Plant categories, images, links and structured nursery content.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+      <a class="experiment-card" href="experiments/experiment-3.html">
+        <span class="experiment-number">03</span>
+        <h3>Experiment 3</h3>
+        <p>Tables for plant pricing, stock details and nursery information.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+      <a class="experiment-card" href="experiments/experiment-4.html">
+        <span class="experiment-number">04</span>
+        <h3>Experiment 4</h3>
+        <p>Customer registration, enquiry and plant-order forms.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+      <a class="experiment-card" href="experiments/experiment-5.html">
+        <span class="experiment-number">05</span>
+        <h3>Experiment 5</h3>
+        <p>Styling the nursery website using attractive layouts and colours.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+      <a class="experiment-card" href="experiments/experiment-6.html">
+        <span class="experiment-number">06</span>
+        <h3>Experiment 6</h3>
+        <p>Responsive design for desktop, tablet and mobile nursery pages.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+      <a class="experiment-card" href="experiments/experiment-7.html">
+        <span class="experiment-number">07</span>
+        <h3>Experiment 7</h3>
+        <p>Client-side interactions for browsing and selecting plants.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+      <a class="experiment-card" href="experiments/experiment-8.html">
+        <span class="experiment-number">08</span>
+        <h3>Experiment 8</h3>
+        <p>Advanced product sections, navigation and nursery components.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+      <a class="experiment-card" href="experiments/experiment-9.html">
+        <span class="experiment-number">09</span>
+        <h3>Experiment 9</h3>
+        <p>Complete online plant nursery web technology exercise.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+      <a class="experiment-card" href="experiments/experiment-10.html">
+        <span class="experiment-number">10</span>
+        <h3>Experiment 10</h3>
+        <p>Final integrated Online Plant Nursery web application page.</p>
+        <span class="open-label">View experiment →</span>
+      </a>
+
+    </section>
+
+    <aside class="information">
+      <span class="information-icon">🪴</span>
+      <div>
+        <strong>Folder setup:</strong>
+        Keep this file as <code>index.html</code> and place your experiment pages inside
+        the <code>experiments</code> folder using names such as
+        <code>experiment-1.html</code>, <code>experiment-2.html</code>, and so on.
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="container">
+      23CS2049 – Web Technology Lab | Online Plant Nursery | URK24CS1038 | Jebarson Caleb D
+    </div>
+  </footer>
+</body>
+</html>
