@@ -34,6 +34,7 @@
 
         .content {
             width: 80%;
+            max-width: 1000px;
             margin: auto;
             background-color: white;
         }
@@ -62,6 +63,25 @@
         #contact {
             background-color: #d7efcf;
             text-align: center;
+        }
+
+        @media (max-width: 650px) {
+            .content {
+                width: 92%;
+            }
+
+            #menu a {
+                display: inline-block;
+                margin: 6px 8px;
+            }
+
+            img {
+                height: auto;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
