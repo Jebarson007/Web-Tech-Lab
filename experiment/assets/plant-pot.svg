@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8f1db"/>
+      <stop offset="1" stop-color="#dce9d6"/>
+    </linearGradient>
+    <linearGradient id="pot" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d98a61"/>
+      <stop offset="1" stop-color="#a94f35"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" fill="url(#wall)"/>
+  <circle cx="720" cy="112" r="62" fill="#efc95c" opacity=".72"/>
+  <path d="M0 506c183-43 341-43 491 2 148 44 275 39 409-7v99H0Z" fill="#bed0b5"/>
+  <g transform="translate(450 310)">
+    <path d="M0 190V-54" stroke="#72513c" stroke-width="13"/>
+    <path d="M-4 30C-177 23-200-102-81-122-21-132 8-69-4 30Z" fill="#3f7452"/>
+    <path d="M1 40C160 25 197-88 87-121 28-138-6-73 1 40Z" fill="#4f875d"/>
+    <path d="M-2 105C-138 103-164 8-65-20-16-35 7 13-2 105Z" fill="#578d61"/>
+    <path d="M3 110C123 102 155 20 75-12 24-34-3 16 3 110Z" fill="#39704b"/>
+    <path d="M-132 166h264l-32 197h-200Z" fill="url(#pot)"/>
+    <path d="M-151 145h302v55h-302Z" rx="18" fill="#bd6847"/>
+  </g>
+</svg>
