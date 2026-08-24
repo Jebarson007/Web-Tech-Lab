@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Advanced CSS3 demonstrations for the Green Leaf online plant nursery">
+    <title>Advanced CSS3 | Green Leaf Nursery</title>
+
+    <style>
+        :root {
+            --cream: #f7f3e8;
+            --paper: #fffdf7;
+            --paper-soft: #edf3e6;
+            --forest: #173f2b;
+            --leaf: #3f7452;
+            --sage: #9cbb91;
+            --clay: #bd6847;
+            --sun: #efc95c;
+            --ink: #243126;
+            --muted: #667268;
+            --line: rgba(23, 63, 43, 0.16);
+            --shadow: 0 20px 55px rgba(38, 67, 43, 0.13);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--ink);
+            background-color: var(--cream);
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .container {
+            width: min(1120px, 92%);
+            margin: 0 auto;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            color: white;
+            background: rgba(23, 63, 43, 0.96);
+            backdrop-filter: blur(12px);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 72px;
+            gap: 28px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border-radius: 50% 50% 50% 12px;
+            color: var(--forest);
+            background: var(--sun);
+            transform: rotate(-7deg);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: white;
+        }
+
+        /* Multiple backgrounds: four independently positioned layers. */
+        .hero {
+            min-height: 620px;
+            display: grid;
+            place-items: center;
+            padding: 96px 0;
+            color: white;
+            background-color: var(--forest);
+            background-image:
+                radial-gradient(circle at 82% 22%, rgba(239, 201, 92, 0.95) 0 7px, transparent 8px),
+                radial-gradient(circle at 83% 22%, rgba(239, 201, 92, 0.19) 0 92px, transparent 93px),
+                linear-gradient(118deg, rgba(23, 63, 43, 0.98) 14%, rgba(23, 63, 43, 0.74) 62%, rgba(23, 63, 43, 0.92)),
+                url("assets/nursery-bg.svg");
+            background-position: center, center, center, center;
+            background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+            background-size: auto, auto, cover, cover;
+        }
+
+        .hero-content {
+            max-width: 760px;
+            margin-right: auto;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 8px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 999px;
+            color: #fff7d6;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin-bottom: 22px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(3rem, 8vw, 6.7rem);
+            font-weight: 500;
+            letter-spacing: -0.055em;
+            line-height: 0.94;
+        }
+
+        .hero p {
+            max-width: 610px;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 1.08rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 0 20px;
+            border: 1px solid transparent;
+            border-radius: 14px 30px 14px 30px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: transform 180ms ease, background-color 180ms ease;
+        }
+
+        .button:hover,
+        .button:focus-visible {
+            transform: translateY(-3px);
+        }
+
+        .button-primary {
+            color: var(--forest);
+            background: var(--sun);
+        }
+
+        .button-secondary {
+            border-color: rgba(255, 255, 255, 0.34);
+            color: white;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        main {
+            overflow: hidden;
+        }
+
+        .section {
+            padding: 86px 0;
+        }
+
+        .section-soft {
+            background: var(--paper-soft);
+        }
+
+        .section-heading {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 0.65fr);
+            align-items: end;
+            gap: 40px;
+            margin-bottom: 38px;
+        }
+
+        .kicker {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--clay);
+            font-size: 0.78rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            color: var(--forest);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+        }
+
+        .section-heading p,
+        .section-intro {
+            color: var(--muted);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        /* Rounded corners: each card uses a four-value radius. */
+        .feature-card {
+            min-height: 235px;
+            padding: 27px;
+            border: 1px solid var(--line);
+            border-radius: 18px 52px 24px 8px;
+            background: var(--paper);
+            box-shadow: 0 14px 34px rgba(37, 68, 42, 0.08);
+        }
+
+        .feature-card:nth-child(2) {
+            border-radius: 52px 18px 8px 24px;
+        }
+
+        .feature-card:nth-child(3) {
+            border-radius: 8px 24px 52px 18px;
+        }
+
+        .feature-number {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            margin-bottom: 42px;
+            place-items: center;
+            border-radius: 50%;
+            color: white;
+            background: var(--leaf);
+            font-size: 0.82rem;
+            font-weight: 900;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 8px;
+            color: var(--forest);
+            font-size: 1.2rem;
+        }
+
+        .feature-card p {
+            color: var(--muted);
+            font-size: 0.94rem;
+        }
+
+        /* Border image: a repeating gradient is sliced and rounded around the box. */
+        .border-image-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 42px;
+            border: 16px solid transparent;
+            border-image: repeating-linear-gradient(135deg, var(--leaf) 0 14px, var(--sun) 14px 28px, var(--clay) 28px 42px) 16 round;
+            background: var(--paper);
+            box-shadow: var(--shadow);
+        }
+
+        .border-image-panel h3 {
+            margin-bottom: 12px;
+            color: var(--forest);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+
+        .border-image-panel p {
+            color: var(--muted);
+        }
+
+        .style-note {
+            align-self: center;
+            padding: 22px;
+            border-radius: 20px;
+            color: white;
+            background: var(--forest);
+        }
+
+        .style-note code {
+            color: #ffdf83;
+            font-family: Consolas, Monaco, monospace;
+        }
+
+        .size-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .size-demo {
+            min-height: 320px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background-color: #dfead9;
+            background-image: url("assets/plant-pot.svg");
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 14px 34px rgba(37, 68, 42, 0.1);
+        }
+
+        .size-demo.cover {
+            background-size: cover;
+        }
+
+        .size-demo.contain {
+            background-size: contain;
+        }
+
+        .size-label {
+            width: 100%;
+            padding: 18px 22px;
+            color: white;
+            background: linear-gradient(transparent, rgba(23, 63, 43, 0.92));
+            font-weight: 800;
+        }
+
+        .interactive-grid {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 28px;
+        }
+
+        .form-card,
+        .catalog-card {
+            padding: 30px;
+            border: 1px solid var(--line);
+            border-radius: 26px;
+            background: var(--paper);
+            box-shadow: 0 14px 34px rgba(37, 68, 42, 0.08);
+        }
+
+        .form-card h3,
+        .catalog-card h3 {
+            margin-bottom: 6px;
+            color: var(--forest);
+            font-size: 1.3rem;
+        }
+
+        .helper {
+            margin-bottom: 24px;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        label {
+            display: block;
+            margin: 17px 0 6px;
+            color: var(--forest);
+            font-size: 0.86rem;
+            font-weight: 800;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 2px solid #c6d4c4;
+            border-radius: 12px;
+            color: var(--ink);
+            background: white;
+            font: inherit;
+            outline: none;
+            transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+        }
+
+        /* Pseudo-classes show required, focus, valid, and invalid states. */
+        input:required {
+            border-left: 5px solid var(--sun);
+        }
+
+        input:focus {
+            border-color: var(--leaf);
+            background-color: #f6fff3;
+            box-shadow: 0 0 0 4px rgba(63, 116, 82, 0.14);
+        }
+
+        input:not(:placeholder-shown):valid {
+            border-color: #3f8a59;
+            background-color: #f1fff4;
+        }
+
+        input:not(:placeholder-shown):invalid {
+            border-color: var(--clay);
+            background-color: #fff5f1;
+        }
+
+        .form-button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px 18px;
+            border: 0;
+            border-radius: 12px 24px 12px 24px;
+            color: white;
+            background: var(--leaf);
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .plant-table {
+            width: 100%;
+            overflow: hidden;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+        }
+
+        .plant-table th,
+        .plant-table td {
+            padding: 13px 15px;
+            text-align: left;
+        }
+
+        .plant-table th {
+            color: white;
+            background: var(--forest);
+            font-size: 0.82rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* nth-child() creates alternating table stripes without extra classes. */
+        .plant-table tbody tr:nth-child(odd) {
+            background: #f7f4eb;
+        }
+
+        .plant-table tbody tr:nth-child(even) {
+            background: #e6f0e2;
+        }
+
+        .plant-table tbody tr:hover {
+            background: #ffe49b;
+        }
+
+        .plant-name {
+            color: var(--forest);
+            font-weight: 800;
+            cursor: help;
+        }
+
+        .plant-photo {
+            opacity: 0.22;
+            transition: opacity 300ms ease, transform 300ms ease;
+        }
+
+        .plant-photo svg {
+            display: block;
+            width: 62px;
+            height: 48px;
+            border-radius: 12px;
+            background: #dfead9;
+        }
+
+        /* Adjacent sibling selector: hover/focus the name to reveal its next cell. */
+        .plant-name:hover + .plant-photo,
+        .plant-name:focus + .plant-photo {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .concept-strip {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 30px;
+        }
+
+        .concept-strip span {
+            min-height: 78px;
+            display: grid;
+            place-items: center;
+            padding: 10px;
+            border-radius: 14px;
+            color: var(--forest);
+            background: rgba(255, 255, 255, 0.62);
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        footer {
+            padding: 32px 0;
+            color: rgba(255, 255, 255, 0.72);
+            background: var(--forest);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 850px) {
+            .feature-grid,
+            .section-heading,
+            .border-image-panel,
+            .interactive-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card {
+                min-height: auto;
+            }
+
+            .feature-number {
+                margin-bottom: 24px;
+            }
+
+            .concept-strip {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 620px) {
+            .nav {
+                min-height: 64px;
+            }
+
+            .nav-links li:not(:last-child) {
+                display: none;
+            }
+
+            .hero {
+                min-height: 560px;
+                padding: 72px 0;
+            }
+
+            .section {
+                padding: 66px 0;
+            }
+
+            .size-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .size-demo {
+                min-height: 260px;
+            }
+
+            .border-image-panel,
+            .form-card,
+            .catalog-card {
+                padding: 24px;
+            }
+
+            .catalog-card {
+                overflow-x: auto;
+            }
+
+            .plant-table {
+                min-width: 540px;
+            }
+
+            .concept-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="nav container" aria-label="Primary navigation">
+            <a class="brand" href="#top">
+                <span class="brand-mark" aria-hidden="true">&#10087;</span>
+                Green Leaf Studio
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#catalog">Plant finder</a></li>
+                <li><a href="../index.html">Lab dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="top">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="eyebrow">Experiment 04 &middot; Advanced CSS3</span>
+                    <h1>Grow a more beautiful web.</h1>
+                    <p>
+                        Explore a living nursery interface shaped by layered backgrounds,
+                        expressive borders, responsive selectors, and interactive states.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="#features">Explore the CSS3 features</a>
+                        <a class="button button-secondary" href="#catalog">Try the interactions</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="features">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="kicker">Designed to demonstrate</span>
+                        <h2>Small details, naturally composed.</h2>
+                    </div>
+                    <p>
+                        The page combines seven advanced CSS3 techniques in one coherent
+                        online nursery experience.
+                    </p>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <span class="feature-number">01</span>
+                        <h3>Organic corners</h3>
+                        <p>Four-value border radii give each card its own leaf-like silhouette.</p>
+                    </article>
+                    <article class="feature-card">
+                        <span class="feature-number">02</span>
+                        <h3>Layered atmosphere</h3>
+                        <p>Multiple backgrounds build depth with sunlight, color, and a garden photograph.</p>
+                    </article>
+                    <article class="feature-card">
+                        <span class="feature-number">03</span>
+                        <h3>Responsive states</h3>
+                        <p>Pseudo-classes and selectors respond to focus, validation, hover, and position.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-soft">
+            <div class="container">
+                <div class="border-image-panel">
+                    <div>
+                        <span class="kicker">Border image</span>
+                        <h3>A border inspired by seed packets.</h3>
+                        <p>
+                            A repeating gradient becomes a decorative border image, sliced
+                            and rounded around this seasonal nursery note.
+                        </p>
+                    </div>
+                    <div class="style-note">
+                        <code>border-image: repeating-linear-gradient(...) 16 round;</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="kicker">Background sizing</span>
+                        <h2>One image, two ways to fit.</h2>
+                    </div>
+                    <p><strong>cover</strong> fills and may crop; <strong>contain</strong> preserves the full image.</p>
+                </div>
+
+                <div class="size-grid">
+                    <div class="size-demo cover" role="img" aria-label="Potted plants displayed using background-size cover">
+                        <span class="size-label">background-size: cover;</span>
+                    </div>
+                    <div class="size-demo contain" role="img" aria-label="Potted plants displayed using background-size contain">
+                        <span class="size-label">background-size: contain;</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-soft" id="catalog">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="kicker">Interactive selectors</span>
+                        <h2>Find your next green companion.</h2>
+                    </div>
+                    <p>Try the form states, then hover a plant name to reveal its adjacent image.</p>
+                </div>
+
+                <div class="interactive-grid">
+                    <form class="form-card" action="#" method="get">
+                        <h3>Plant care note</h3>
+                        <p class="helper">Required, focus, valid, and invalid states are styled with pseudo-classes.</p>
+
+                        <label for="visitor-name">Your name *</label>
+                        <input id="visitor-name" name="name" type="text" placeholder="Enter your name" required minlength="2">
+
+                        <label for="visitor-email">Email address *</label>
+                        <input id="visitor-email" name="email" type="email" placeholder="name@example.com" required>
+
+                        <button class="form-button" type="submit">Send care guide</button>
+                    </form>
+
+                    <div class="catalog-card">
+                        <h3>Today&rsquo;s nursery shelf</h3>
+                        <p class="helper">Odd and even rows are striped with <code>:nth-child()</code>.</p>
+
+                        <table class="plant-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Plant</th>
+                                    <th scope="col">Preview</th>
+                                    <th scope="col">Light</th>
+                                    <th scope="col">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="plant-name" tabindex="0">Monstera</td>
+                                    <td class="plant-photo">
+                                        <svg viewBox="0 0 62 48" role="img" aria-label="Monstera leaves">
+                                            <rect width="62" height="48" rx="12" fill="#dbe8d3"/>
+                                            <path d="M31 42V20" stroke="#9c6847" stroke-width="3"/>
+                                            <path d="M31 25C10 21 9 6 26 6c5 0 7 5 5 19Z" fill="#39704b"/>
+                                            <path d="M31 27C53 24 56 9 39 7c-5-1-9 5-8 20Z" fill="#4f875d"/>
+                                        </svg>
+                                    </td>
+                                    <td>Bright, indirect</td>
+                                    <td>Rs. 450</td>
+                                </tr>
+                                <tr>
+                                    <td class="plant-name" tabindex="0">Snake Plant</td>
+                                    <td class="plant-photo">
+                                        <svg viewBox="0 0 62 48" role="img" aria-label="Snake plant">
+                                            <rect width="62" height="48" rx="12" fill="#f1e8c8"/>
+                                            <path d="M21 37C17 20 20 6 25 4c2 15 1 24 1 33M30 37c-3-17 1-30 5-33 2 15 0 24 0 33M39 37c-1-13 3-23 7-25 0 12-2 19-2 25" fill="#4c8051"/>
+                                            <path d="M18 35h30l-4 11H22Z" fill="#bd6847"/>
+                                        </svg>
+                                    </td>
+                                    <td>Low to bright</td>
+                                    <td>Rs. 320</td>
+                                </tr>
+                                <tr>
+                                    <td class="plant-name" tabindex="0">Peace Lily</td>
+                                    <td class="plant-photo">
+                                        <svg viewBox="0 0 62 48" role="img" aria-label="Peace lily">
+                                            <rect width="62" height="48" rx="12" fill="#e2eddc"/>
+                                            <path d="M31 42V15M31 28 18 17M31 32l15-13" stroke="#3f7452" stroke-width="3"/>
+                                            <path d="M31 17C23 7 35 2 40 10c-4 5-7 7-9 7Z" fill="#fffdf7" stroke="#c6d4c4"/>
+                                            <ellipse cx="17" cy="16" rx="7" ry="12" transform="rotate(-42 17 16)" fill="#4f875d"/>
+                                            <ellipse cx="47" cy="18" rx="7" ry="12" transform="rotate(40 47 18)" fill="#39704b"/>
+                                        </svg>
+                                    </td>
+                                    <td>Medium, indirect</td>
+                                    <td>Rs. 380</td>
+                                </tr>
+                                <tr>
+                                    <td class="plant-name" tabindex="0">Aloe Vera</td>
+                                    <td class="plant-photo">
+                                        <svg viewBox="0 0 62 48" role="img" aria-label="Aloe vera plant">
+                                            <rect width="62" height="48" rx="12" fill="#e4edd6"/>
+                                            <path d="M30 37 19 12c9 4 11 13 13 25M32 37 31 5c7 9 6 21 3 32M35 37 48 12c-1 13-6 20-10 25M28 37 13 22c8 1 13 7 17 15" fill="#5d9360" stroke="#39704b" stroke-width="1.5"/>
+                                            <path d="M18 35h29l-4 11H22Z" fill="#c87b55"/>
+                                        </svg>
+                                    </td>
+                                    <td>Direct sun</td>
+                                    <td>Rs. 180</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="concept-strip" aria-label="CSS3 concepts demonstrated">
+                    <span>border-radius</span>
+                    <span>border-image</span>
+                    <span>multiple backgrounds</span>
+                    <span>background-size</span>
+                    <span>pseudo-classes</span>
+                    <span>adjacent sibling +</span>
+                    <span>:nth-child()</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            Experiment 04 &middot; Advanced CSS3 &middot; Green Leaf Online Plant Nursery
+        </div>
+    </footer>
+</body>
+
+</html>
