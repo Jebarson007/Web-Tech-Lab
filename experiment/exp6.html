@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Care Tasks | Green Leaf Nursery</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #e6f3e6;
+            color: #1f4221;
+        }
+
+        main {
+            width: min(520px, calc(100% - 32px));
+            margin: 40px auto;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        a {
+            color: #2f7b2f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin-bottom: 4px;
+        }
+
+        #taskForm {
+            display: flex;
+            gap: 8px;
+            margin: 20px 0 12px;
+        }
+
+        input,
+        button {
+            padding: 10px;
+            border: 1px solid #aac9aa;
+            border-radius: 6px;
+            font: inherit;
+        }
+
+        #taskInput {
+            flex: 1;
+        }
+
+        button {
+            background-color: #3f8f3f;
+            border-color: #3f8f3f;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #367b36;
+        }
+
+        .filters button {
+            padding: 6px 12px;
+            background-color: white;
+            color: #2f7b2f;
+        }
+
+        .filters button.active {
+            background-color: #3f8f3f;
+            color: white;
+        }
+
+        #taskList {
+            list-style: none;
+            padding: 0;
+        }
+
+        #taskList li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #d7efcf;
+        }
+
+        #taskList li span {
+            flex: 1;
+        }
+
+        #taskList li.done span {
+            color: #8aa38a;
+            text-decoration: line-through;
+        }
+
+        #taskList input[type="checkbox"] {
+            accent-color: #3f8f3f;
+        }
+
+        .delete-btn {
+            padding: 4px 10px;
+            background-color: #c0392b;
+            border-color: #c0392b;
+        }
+
+        .delete-btn:hover {
+            background-color: #a93226;
+        }
+
+        #counter {
+            color: #486c48;
+            font-weight: bold;
+        }
+
+        @media (max-width: 560px) {
+            main {
+                margin: 10px auto;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="../index.html">← Back to experiments</a>
+
+        <h1>Plant Care Tasks</h1>
+        <p>A task tracker built with JavaScript functions.</p>
+
+        <form id="taskForm">
+            <input id="taskInput" type="text" placeholder="e.g. Water the money plant">
+            <button type="submit">Add</button>
+        </form>
+
+        <div class="filters">
+            <button type="button" data-filter="all" class="active">All</button>
+            <button type="button" data-filter="open">Open</button>
+            <button type="button" data-filter="done">Done</button>
+        </div>
+
+        <ul id="taskList"></ul>
+        <p id="counter"></p>
+    </main>
+
+    <script>
+        // State
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        let filter = "all";
+
+        const form = document.getElementById("taskForm");
+        const input = document.getElementById("taskInput");
+        const list = document.getElementById("taskList");
+        const counter = document.getElementById("counter");
+
+        // Create a new task object
+        function createTask(text) {
+            return {
+                id: Date.now(),
+                text: text,
+                done: false
+            };
+        }
+
+        // Functions that change the tasks
+        function addTask(text) {
+            tasks.push(createTask(text));
+            saveAndRender();
+        }
+
+        function toggleTask(id) {
+            tasks = tasks.map(t =>
+                t.id === id ? { ...t, done: !t.done } : t);
+            saveAndRender();
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            saveAndRender();
+        }
+
+        // Shared helper: save, then redraw
+        function saveAndRender() {
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        // Functions that draw the screen
+        const isOpen = t => !t.done;
+
+        function getVisible() {
+            if (filter === "open") return tasks.filter(isOpen);
+            if (filter === "done") return tasks.filter(t => t.done);
+            return tasks;
+        }
+
+        function taskItem(t) {
+            const li = document.createElement("li");
+            if (t.done) li.className = "done";
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = t.done;
+            checkbox.addEventListener("change", () => toggleTask(t.id));
+
+            const span = document.createElement("span");
+            span.textContent = t.text;
+
+            const del = document.createElement("button");
+            del.className = "delete-btn";
+            del.textContent = "Delete";
+            del.addEventListener("click", () => deleteTask(t.id));
+
+            li.append(checkbox, span, del);
+            return li;
+        }
+
+        function countOpen() {
+            return tasks.filter(isOpen).length;
+        }
+
+        function renderTasks() {
+            list.innerHTML = "";
+            getVisible().forEach(t => {
+                list.appendChild(taskItem(t));
+            });
+            counter.textContent = countOpen() + " left";
+        }
+
+        // Connect the page to the functions
+        function handleSubmit(event) {
+            event.preventDefault();
+            const text = input.value.trim();
+            if (text !== "") {
+                addTask(text);
+            }
+            input.value = "";
+        }
+
+        function handleFilter(event) {
+            filter = event.target.dataset.filter;
+            document.querySelectorAll(".filters button").forEach(b => {
+                b.classList.toggle("active", b === event.target);
+            });
+            renderTasks();
+        }
+
+        form.addEventListener("submit", handleSubmit);
+        document.querySelectorAll(".filters button").forEach(b => {
+            b.addEventListener("click", handleFilter);
+        });
+
+        // Start with a render
+        renderTasks();
+    </script>
+</body>
+</html>
