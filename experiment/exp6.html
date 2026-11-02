@@ -101,6 +101,10 @@
             accent-color: #3f8f3f;
         }
 
+        .edit-btn {
+            padding: 4px 10px;
+        }
+
         .delete-btn {
             padding: 4px 10px;
             background-color: #c0392b;
@@ -182,6 +186,12 @@
             saveAndRender();
         }
 
+        function editTask(id, text) {
+            tasks = tasks.map(t =>
+                t.id === id ? { ...t, text: text } : t);
+            saveAndRender();
+        }
+
         // Shared helper: save, then redraw
         function saveAndRender() {
             localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -209,12 +219,17 @@
             const span = document.createElement("span");
             span.textContent = t.text;
 
+            const edit = document.createElement("button");
+            edit.className = "edit-btn";
+            edit.textContent = "Edit";
+            edit.addEventListener("click", () => handleEdit(t));
+
             const del = document.createElement("button");
             del.className = "delete-btn";
             del.textContent = "Delete";
             del.addEventListener("click", () => deleteTask(t.id));
 
-            li.append(checkbox, span, del);
+            li.append(checkbox, span, edit, del);
             return li;
         }
 
@@ -238,6 +253,13 @@
                 addTask(text);
             }
             input.value = "";
+        }
+
+        function handleEdit(t) {
+            const newText = prompt("Edit task:", t.text);
+            if (newText !== null && newText.trim() !== "") {
+                editTask(t.id, newText.trim());
+            }
         }
 
         function handleFilter(event) {
