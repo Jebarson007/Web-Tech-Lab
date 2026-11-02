@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModernUI Dashboard | ReactJS</title>
+
+    <!-- React, ReactDOM and Babel (to run JSX directly in the browser) -->
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+
+    <!-- App.css -->
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-color: #2563eb;
+            --border-color: #e2e8f0;
+        }
+
+        .app-root.dark {
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #3b82f6;
+            --border-color: #334155;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .app-root {
+            min-height: 100vh;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: system-ui, -apple-system, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-color);
+        }
+
+        .dashboard-content {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .stat-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 0.5rem;
+        }
+
+        .stat-value {
+            margin: 0;
+            font-size: 1.6rem;
+        }
+
+        .stat-badge {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .stat-badge.positive { color: #16a34a; background: rgba(22, 163, 74, 0.1); }
+        .stat-badge.negative { color: #dc2626; background: rgba(220, 38, 38, 0.1); }
+
+        .task-section {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .task-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .task-form input {
+            flex: 1;
+            min-width: 0;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .task-form button {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .task-label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+        }
+
+        .task-item.completed span {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        .empty-state {
+            color: var(--text-secondary);
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 600px) {
+            .app-header {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+
+            .task-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- App.js -->
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Reusable Header Component
+        const Header = ({ theme, toggleTheme, userName }) => {
+            return (
+                <header className="app-header">
+                    <div className="brand">
+                        <a href="../index.html">←</a>
+                        <h2>📊 ModernUI Dashboard</h2>
+                    </div>
+                    <div className="header-actions">
+                        <span>Welcome, <strong>{userName}</strong></span>
+                        <button className="theme-toggle-btn" onClick={toggleTheme}>
+                            {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+                        </button>
+                    </div>
+                </header>
+            );
+        };
+
+        // Reusable Stat Card Component
+        const StatCard = ({ title, value, change, isPositive, icon }) => {
+            return (
+                <div className="stat-card">
+                    <div className="stat-header">
+                        <span className="stat-icon">{icon}</span>
+                        <span className="stat-title">{title}</span>
+                    </div>
+                    <div className="stat-body">
+                        <h3 className="stat-value">{value}</h3>
+                        <span className={`stat-badge ${isPositive ? "positive" : "negative"}`}>
+                            {isPositive ? "▲" : "▼"} {change}
+                        </span>
+                    </div>
+                </div>
+            );
+        };
+
+        // Interactive Task List Component
+        const TaskList = ({ tasks, onToggleTask, onDeleteTask }) => {
+            return (
+                <div className="task-container">
+                    <h3>Project Milestones</h3>
+                    <ul className="task-list">
+                        {tasks.length === 0 ? (
+                            <li className="empty-state">No active milestones found.</li>
+                        ) : (
+                            tasks.map((task) => (
+                                <li key={task.id} className={`task-item ${task.completed ? "completed" : ""}`}>
+                                    <label className="task-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={task.completed}
+                                            onChange={() => onToggleTask(task.id)}
+                                        />
+                                        <span>{task.title}</span>
+                                    </label>
+                                    <button className="delete-btn" onClick={() => onDeleteTask(task.id)}>
+                                        🗑️
+                                    </button>
+                                </li>
+                            ))
+                        )}
+                    </ul>
+                </div>
+            );
+        };
+
+        // Main Modern UI Application Component
+        function App() {
+            const [theme, setTheme] = useState("light");
+            const [taskInput, setTaskInput] = useState("");
+            const [tasks, setTasks] = useState([
+                { id: 1, title: "Design Component Wireframes", completed: true },
+                { id: 2, title: "Build Responsive Layout System", completed: false },
+                { id: 3, title: "Optimize Dark/Light Theme Switching", completed: false },
+            ]);
+
+            const toggleTheme = () => {
+                setTheme((prev) => (prev === "light" ? "dark" : "light"));
+            };
+
+            const handleAddTask = (e) => {
+                e.preventDefault();
+                if (!taskInput.trim()) return;
+                const newTask = {
+                    id: Date.now(),
+                    title: taskInput.trim(),
+                    completed: false,
+                };
+                setTasks([...tasks, newTask]);
+                setTaskInput("");
+            };
+
+            const handleToggleTask = (id) => {
+                setTasks(
+                    tasks.map((task) =>
+                        task.id === id ? { ...task, completed: !task.completed } : task
+                    )
+                );
+            };
+
+            const handleDeleteTask = (id) => {
+                setTasks(tasks.filter((task) => task.id !== id));
+            };
+
+            return (
+                <div className={`app-root ${theme}`}>
+                    <Header theme={theme} toggleTheme={toggleTheme} userName="Jebarson Caleb" />
+
+                    <main className="dashboard-content">
+                        <section className="stats-grid">
+                            <StatCard
+                                title="Total Revenue"
+                                value="$48,250"
+                                change="14.2%"
+                                isPositive={true}
+                                icon="💰"
+                            />
+                            <StatCard
+                                title="Active Sessions"
+                                value="2,840"
+                                change="8.6%"
+                                isPositive={true}
+                                icon="👥"
+                            />
+                            <StatCard
+                                title="Bounce Rate"
+                                value="21.4%"
+                                change="2.1%"
+                                isPositive={false}
+                                icon="📉"
+                            />
+                        </section>
+
+                        <section className="task-section">
+                            <form className="task-form" onSubmit={handleAddTask}>
+                                <input
+                                    type="text"
+                                    placeholder="Add a new milestone..."
+                                    value={taskInput}
+                                    onChange={(e) => setTaskInput(e.target.value)}
+                                />
+                                <button type="submit">Add Task</button>
+                            </form>
+
+                            <TaskList
+                                tasks={tasks}
+                                onToggleTask={handleToggleTask}
+                                onDeleteTask={handleDeleteTask}
+                            />
+                        </section>
+                    </main>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Shell Commands | Web Technology Lab</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #e6f3e6;
+            color: #1f4221;
+            line-height: 1.6;
+        }
+
+        main {
+            width: min(860px, calc(100% - 32px));
+            margin: 32px auto;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        a {
+            color: #2f7b2f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin-top: 32px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #c3e0c3;
+        }
+
+        pre {
+            overflow-x: auto;
+            padding: 16px;
+            border-radius: 8px;
+            color: #e6f3e6;
+            background-color: #13261a;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .comment {
+            color: #8fb996;
+        }
+
+        .download {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 16px;
+            border-radius: 6px;
+            color: white;
+            background-color: #3f8f3f;
+        }
+
+        @media (max-width: 560px) {
+            main {
+                margin: 10px auto;
+                padding: 18px;
+            }
+
+            pre {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="../../index.html">← Back to experiments</a>
+
+        <h1>Working with MongoDB using Shell Commands</h1>
+
+        <h2>Aim</h2>
+        <p>
+            To demonstrate database creation, document insertion, querying, updating, indexing,
+            and deletion in a document-oriented NoSQL database using MongoDB Shell (mongosh) commands.
+        </p>
+
+        <h2>Description</h2>
+        <p>
+            MongoDB is a NoSQL document database. Instead of tables and rows, it stores data as
+            flexible JSON-like BSON documents grouped inside collections. The MongoDB Shell
+            (<code>mongosh</code>) is an interactive JavaScript interface for working with the database.
+        </p>
+        <ul>
+            <li><strong>Database &amp; Collection Management:</strong> <code>use</code>, <code>createCollection()</code></li>
+            <li><strong>Create:</strong> <code>insertOne()</code>, <code>insertMany()</code></li>
+            <li><strong>Read:</strong> <code>find()</code> with <code>$gte</code>, <code>$or</code>, array matching, projections, <code>countDocuments()</code></li>
+            <li><strong>Update:</strong> <code>updateOne()</code>, <code>updateMany()</code> with <code>$set</code>, <code>$inc</code>, <code>$push</code></li>
+            <li><strong>Indexing:</strong> <code>createIndex()</code> with a unique index</li>
+            <li><strong>Delete:</strong> <code>deleteOne()</code>, <code>deleteMany()</code>, <code>drop()</code>, <code>dropDatabase()</code></li>
+        </ul>
+
+        <p>Open <code>mongosh</code> and paste the commands below one section at a time. The full list is also in <code>students.js</code>.</p>
+        <a class="download" href="students.js" download>Download students.js</a>
+
+        <h2>1. Database &amp; Collection Management</h2>
+<pre><span class="comment">// List all existing databases on the MongoDB server</span>
+show dbs;
+
+<span class="comment">// Switch to (or create) database 'universityDB'</span>
+use universityDB;
+
+<span class="comment">// Confirm current active database</span>
+db;
+
+<span class="comment">// Create an explicit collection named 'students'</span>
+db.createCollection("students");
+
+<span class="comment">// Display all collections in current database</span>
+show collections;</pre>
+
+        <h2>2. Create Operations (Insertion)</h2>
+<pre><span class="comment">// Insert a single document</span>
+db.students.insertOne({
+  student_id: 101,
+  name: "Alice Smith",
+  age: 20,
+  major: "Computer Science",
+  gpa: 3.8,
+  skills: ["Python", "MongoDB"],
+  enrollmentDate: new Date("2023-09-01")
+});
+
+<span class="comment">// Insert multiple documents</span>
+db.students.insertMany([
+  {
+    student_id: 102,
+    name: "Bob Jones",
+    age: 22,
+    major: "Data Science",
+    gpa: 3.4,
+    skills: ["R", "Python", "SQL"],
+    enrollmentDate: new Date("2022-09-01")
+  },
+  {
+    student_id: 103,
+    name: "Charlie Brown",
+    age: 21,
+    major: "Computer Science",
+    gpa: 2.8,
+    skills: ["Java", "C++"],
+    enrollmentDate: new Date("2023-01-15")
+  },
+  {
+    student_id: 104,
+    name: "Diana Prince",
+    age: 23,
+    major: "Cybersecurity",
+    gpa: 3.9,
+    skills: ["Linux", "Python", "Networking"],
+    enrollmentDate: new Date("2021-09-01")
+  }
+]);</pre>
+
+        <h2>3. Read Operations (Querying)</h2>
+<pre><span class="comment">// Retrieve all documents</span>
+db.students.find();
+
+<span class="comment">// Exact match filter</span>
+db.students.find({ major: "Computer Science" });
+
+<span class="comment">// Comparison operator ($gte: greater than or equal to)</span>
+db.students.find({ gpa: { $gte: 3.5 } });
+
+<span class="comment">// Logical operator ($or) and array value check</span>
+db.students.find({
+  $or: [
+    { major: "Cybersecurity" },
+    { skills: "MongoDB" }
+  ]
+});
+
+<span class="comment">// Projection: 1 to include, 0 to exclude</span>
+db.students.find({}, { name: 1, gpa: 1, major: 1, _id: 0 });
+
+<span class="comment">// Fetch a single document</span>
+db.students.findOne({ student_id: 101 });
+
+<span class="comment">// Count documents matching a condition</span>
+db.students.countDocuments({ major: "Computer Science" });</pre>
+
+        <h2>4. Update Operations</h2>
+<pre><span class="comment">// Update a single document using $set</span>
+db.students.updateOne(
+  { student_id: 101 },
+  { $set: { gpa: 3.9, age: 21 } }
+);
+
+<span class="comment">// Append to an array field in many documents using $push</span>
+db.students.updateMany(
+  { major: "Computer Science" },
+  { $push: { skills: "Git" } }
+);
+
+<span class="comment">// Increment a number by 1 using $inc</span>
+db.students.updateOne(
+  { student_id: 102 },
+  { $inc: { age: 1 } }
+);</pre>
+
+        <h2>5. Indexing</h2>
+<pre><span class="comment">// Create a unique index on student_id</span>
+db.students.createIndex({ student_id: 1 }, { unique: true });
+
+<span class="comment">// List all indexes on the collection</span>
+db.students.getIndexes();</pre>
+
+        <h2>6. Delete Operations &amp; Cleanup</h2>
+<pre><span class="comment">// Delete a single document</span>
+db.students.deleteOne({ student_id: 103 });
+
+<span class="comment">// Delete all documents with GPA below 3.0</span>
+db.students.deleteMany({ gpa: { $lt: 3.0 } });
+
+<span class="comment">// Drop the collection</span>
+db.students.drop();
+
+<span class="comment">// Drop the current database</span>
+db.dropDatabase();</pre>
+
+        <h2>Result</h2>
+        <p>
+            Database creation, document insertion, querying, updating, indexing and deletion
+            were performed in MongoDB using mongosh shell commands.
+        </p>
+    </main>
+</body>
+</html>
