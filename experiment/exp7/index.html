@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>F1 2025 Telemetry</title>
+  <meta name="description" content="Explore lap times, strategy and car telemetry from every session of the 2025 Formula 1 season.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/">
+      <span class="brand-mark"></span>
+      <span class="brand-text">F1 <b>2025</b> <em>Telemetry</em></span>
+    </a>
+    <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+    <button class="icon-btn" id="themeToggle" aria-label="Toggle colour theme" title="Toggle theme">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1Z"/></svg>
+    </button>
+  </header>
+
+  <main id="app">
+    <!-- Season overview -->
+    <section id="view-home" class="view" hidden>
+      <div class="hero">
+        <div class="hero-text">
+          <p class="eyebrow">Formula 1 World Championship</p>
+          <h1>The 2025 season,<br><span class="accent">lap by lap.</span></h1>
+          <p class="lede">Classification, race pace, tyre strategy and full car telemetry — speed, throttle, brake, gear and RPM — for every session of all 24 rounds.</p>
+        </div>
+        <div class="hero-stats" id="heroStats"></div>
+      </div>
+      <div class="section-head">
+        <h2>Calendar</h2>
+        <div class="seg" id="calFilter" role="tablist">
+          <button class="active" data-filter="all">All rounds</button>
+          <button data-filter="sprint">Sprint weekends</button>
+        </div>
+      </div>
+      <div class="event-grid" id="eventGrid"></div>
+    </section>
+
+    <!-- Session explorer -->
+    <section id="view-session" class="view" hidden>
+      <div class="event-banner" id="eventBanner"></div>
+      <div class="session-bar">
+        <div class="session-chips" id="sessionChips"></div>
+      </div>
+      <div class="tabs" id="tabs" role="tablist">
+        <button data-tab="results" class="active">Results</button>
+        <button data-tab="laps">Lap Times</button>
+        <button data-tab="strategy">Strategy</button>
+        <button data-tab="telemetry">Telemetry</button>
+        <button data-tab="info">Weather &amp; Race Control</button>
+      </div>
+
+      <div class="panel" data-panel="results"></div>
+      <div class="panel" data-panel="laps" hidden></div>
+      <div class="panel" data-panel="strategy" hidden></div>
+      <div class="panel" data-panel="telemetry" hidden></div>
+      <div class="panel" data-panel="info" hidden></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Data: <a href="https://github.com/TracingInsights-Archive/2025" target="_blank" rel="noopener">TracingInsights-Archive/2025</a> (FastF1).
+    Unofficial fan project, not associated with Formula 1.
+  </footer>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="js/manifest.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
